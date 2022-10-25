@@ -10,7 +10,10 @@ import (
 
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+
+	models "github.com/mannx/caltrac/models"
 )
 
 // Version of the current build/release
@@ -40,13 +43,17 @@ func main() {
 
 	log.Info().Msg("Initializing database...")
 	log.Debug().Msgf("  => Database path: %v", dbName)
-	// DB, err := gorm.Open(sqlite.Open(dbName), &gorm.Config{})
-	// if err != nil {
-	// 	log.Fatal().Err(err).Msg("Unable to open database...")
-	// }
+	dbo, err := gorm.Open(sqlite.Open(dbName), &gorm.Config{})
+	if err != nil {
+		log.Fatal().Err(err).Msg("Unable to open database...")
+	}
 
-	// log.Info().Msg("Auto migrating the database...")
-	// migrateDB()
+	// if we used DB initially, we would be creating a local DB variable and not saving into the global?
+	//	recieving error about not using variable DB
+	DB = dbo
+
+	log.Info().Msg("Auto migrating the database...")
+	migrateDB()
 
 	log.Info().Msg("Initialiing server and middleware")
 
@@ -71,4 +78,6 @@ func main() {
 
 func migrateDB() {
 	// TODO as neded
+	DB.AutoMigrate(&models.ItemName{})
+	DB.AutoMigrate(&models.MealEntry{})
 }
