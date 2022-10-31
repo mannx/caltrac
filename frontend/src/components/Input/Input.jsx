@@ -16,7 +16,10 @@ export default class Input extends React.Component {
 	}
 
 	loadData = async () => {
-		// todo
+		// load in any data for the current date
+		// const url = UrlGet("WasteNames");
+		// const resp = await fetch(url);
+		// const data = await resp.json();
 	}
 
 	render = () => {
