@@ -76,6 +76,7 @@ func main() {
 	}
 }
 
+// migrateDB ensures all selected models have all fields in the database
 func migrateDB() {
 	// TODO as neded
 	DB.AutoMigrate(&models.ItemName{})
